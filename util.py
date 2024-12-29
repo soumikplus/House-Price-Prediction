@@ -32,16 +32,28 @@ def load_saved_artifacts():
     columns_file_path = os.path.join(current_dir, 'columns.json')
     model_file_path = os.path.join(current_dir, 'banglore_home_prices_model.pickle')
 
+    print(f"Columns file path: {columns_file_path}")
+    print(f"Model file path: {model_file_path}")
+
     # Load columns.json
-    with open(columns_file_path, "r") as f:
-        __data_columns = json.load(f)['data_columns']
-        __locations = __data_columns[3:]  # first 3 columns are sqft, bath, bhk
+    try:
+        with open(columns_file_path, "r") as f:
+            __data_columns = json.load(f)['data_columns']
+            __locations = __data_columns[3:]  # first 3 columns are sqft, bath, bhk
+        print("Columns loaded successfully")
+    except Exception as e:
+        print(f"Error loading columns.json: {e}")
 
     # Load model
     global __model
     if __model is None:
-        with open(model_file_path, 'rb') as f:
-            __model = pickle.load(f)
+        try:
+            with open(model_file_path, 'rb') as f:
+                __model = pickle.load(f)
+            print("Model loaded successfully")
+        except Exception as e:
+            print(f"Error loading model: {e}")
+
     print("loading saved artifacts...done")
 
 def get_location_names():
